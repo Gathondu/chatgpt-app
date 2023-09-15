@@ -27,5 +27,12 @@ with st.sidebar:
             response = chat(st.session_state.messages)
 
         st.session_state.messages.append(AIMessage(content=response.content))
+if len(st.session_state.messages) >= 1:
+    if not isinstance(st.session_state.messages[0], SystemMessage):
+        st.session_state.messages.insert(0, SystemMessage(content="You are a helpful assistant."))
 
-st.session_state.messages
+for i, msg in enumerate(st.session_state.messages[1:]):
+    if i % 2 == 0:
+        message(msg.content, is_user=True, key=f"{i} + 🤓")
+    else:
+        message(msg.content, is_user=False, key=f"{i} + 🤖")
